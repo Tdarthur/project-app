@@ -4,15 +4,17 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Layout from "./Layout";
 import Home from "./routes/Home";
-import About from "./routes/About";
-import Error404 from "./routes/errors/Error404";
 import Projects from "./routes/Projects";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Layout />,
-        errorElement: <Error404 />,
+        errorElement: (
+            <>
+                <Layout error></Layout>
+            </>
+        ),
         children: [
             {
                 path: "/",
@@ -21,10 +23,6 @@ const router = createBrowserRouter([
             {
                 path: "/projects",
                 element: <Projects />
-            },
-            {
-                path: "/about",
-                element: <About />
             }
         ]
     }
