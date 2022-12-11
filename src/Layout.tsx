@@ -1,7 +1,11 @@
-import { Outlet, useLocation, useRouteError, Link } from "react-router-dom";
+import { Outlet, useLocation, useRouteError } from "react-router-dom";
 
 import Header from "./components/Header";
 import NavigationList, { NavigationEntry } from "./components/NavigationList";
+
+import { HomeIcon, IdentificationIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import ErrorPage from "./routes/ErrorPage";
 
 type Props = {
     error?: boolean;
@@ -19,13 +23,23 @@ function Layout({ error = false }: Props) {
     const navigation: NavigationEntry[] = [
         {
             href: "/",
-            img: <></>,
+            img: <HomeIcon />,
             text: "Home"
         },
         {
             href: "/projects",
-            img: <></>,
+            img: <MagnifyingGlassIcon />,
             text: "Projects"
+        },
+        {
+            href: "/about",
+            img: <QuestionMarkCircleIcon />,
+            text: "About"
+        },
+        {
+            href: "/contact",
+            img: <IdentificationIcon />,
+            text: "Contact Me"
         }
     ];
 
@@ -49,25 +63,10 @@ function Layout({ error = false }: Props) {
                 pageName={pageName!}
                 error={error}
             />
-            <NavigationList navigation={navigation} />
-            {!error ? (
-                <main className="mt-20 p-8 text-white">
-                    <Outlet />
-                </main>
-            ) : (
-                <main className="mt-20 p-8 text-center text-red-400">
-                    <h2 className="text-2xl font-bold">
-                        Please return to the{" "}
-                        <Link
-                            to="/"
-                            className="text-red-500 underline transition-colors hover:text-white"
-                        >
-                            home page
-                        </Link>{" "}
-                        or try again
-                    </h2>
-                </main>
-            )}
+            <div className="mt-28 flex">
+                <NavigationList navigation={navigation} />
+                <main className="min-h-screen flex-grow p-8 text-white">{!error ? <Outlet /> : <ErrorPage />}</main>
+            </div>
         </>
     );
 }
