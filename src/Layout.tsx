@@ -3,7 +3,7 @@ import { Outlet, useLocation, useRouteError } from "react-router-dom";
 import Header from "./components/Header";
 import NavigationList, { NavigationEntry } from "./components/NavigationList";
 
-import { HomeIcon, IdentificationIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { ArrowRightIcon, HomeIcon, IdentificationIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import ErrorPage from "./routes/ErrorPage";
 
@@ -40,6 +40,11 @@ function Layout({ error = false }: Props) {
             href: "/contact",
             img: <IdentificationIcon />,
             text: "Contact Me"
+        },
+        {
+            href: "/test",
+            img: <ArrowRightIcon />,
+            text: "Test"
         }
     ];
 
@@ -63,9 +68,10 @@ function Layout({ error = false }: Props) {
                 pageName={pageName!}
                 error={error}
             />
-            <div className="mt-28 flex">
+            <div>
+                <span className="block h-28" />
                 <NavigationList navigation={navigation} />
-                <main className="min-h-screen flex-grow p-8 text-white">{!error ? <Outlet /> : <ErrorPage />}</main>
+                <main className="min-h-screen px-8 text-white">{!error ? <Outlet /> : <ErrorPage />}</main>
             </div>
         </>
     );

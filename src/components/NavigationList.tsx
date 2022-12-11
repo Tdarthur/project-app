@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import classNames from "classnames";
+import { ArrowRightIcon } from "@heroicons/react/24/solid";
 
 export type NavigationEntry = {
     href: string;
@@ -16,16 +17,18 @@ export default function NavigationList({ navigation }: Props) {
 
     // somehow position this on the left as a list
     return (
-        <nav className="px-8">
-            {navigation.map((entryData, index) => (
-                <NavigationItem
-                    entryData={entryData}
-                    selected={location.pathname === entryData.href}
-                    index={index}
-                    key={index}
-                />
-            ))}
-        </nav>
+        <div className="fixed">
+            <nav className="relative -left-40 w-32">
+                {navigation.map((entryData, index) => (
+                    <NavigationItem
+                        entryData={entryData}
+                        selected={location.pathname === entryData.href}
+                        index={index}
+                        key={index}
+                    />
+                ))}
+            </nav>
+        </div>
     );
 }
 
@@ -73,10 +76,15 @@ function NavigationItem({ entryData, selected, index }: NavigationItemProps) {
     const colorGradient = colorPattern[index % colorPattern.length];
 
     return (
-        <li className={classNames("list-none", selected ? "text-white" : "text-zinc-600")}>
-            <Link
-                to={entryData.href}
-                className="group m-2 flex h-7 items-center gap-2"
+        <Link
+            to={entryData.href}
+            className="group"
+        >
+            <li
+                className={classNames(
+                    "m-2 flex h-7 list-none items-center gap-2",
+                    selected ? "text-white" : "text-zinc-600"
+                )}
             >
                 <div
                     className={classNames(
@@ -86,7 +94,12 @@ function NavigationItem({ entryData, selected, index }: NavigationItemProps) {
                         selected ? colorGradient.selected : "from-zinc-700 to-zinc-800 group-hover:text-zinc-300"
                     )}
                 >
-                    {entryData.img}
+                    <span className={classNames("relative", { "nav-button": !selected })}>
+                        {entryData.img}
+                        <ArrowRightIcon
+                            className={classNames(selected ? "hidden" : "nav-arrow absolute top-0 left-0")}
+                        />
+                    </span>
                 </div>
                 <span
                     className={classNames(
@@ -96,7 +109,7 @@ function NavigationItem({ entryData, selected, index }: NavigationItemProps) {
                 >
                     {entryData.text}
                 </span>
-            </Link>
-        </li>
+            </li>
+        </Link>
     );
 }
