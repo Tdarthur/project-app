@@ -6,17 +6,14 @@ import Layout from "./Layout";
 import AboutPage from "./routes/AboutPage";
 import ContactPage from "./routes/ContactPage";
 import HomePage from "./routes/HomePage";
+import CubePage from "./routes/projects/CubePage";
 import ProjectsPage from "./routes/ProjectsPage";
 
-const router = createBrowserRouter([
+const routes = [
     {
         path: "/",
         element: <Layout />,
-        errorElement: (
-            <>
-                <Layout error></Layout>
-            </>
-        ),
+        errorElement: <Layout error />,
         children: [
             {
                 path: "/",
@@ -24,7 +21,13 @@ const router = createBrowserRouter([
             },
             {
                 path: "/projects",
-                element: <ProjectsPage />
+                element: <ProjectsPage />,
+                children: [
+                    {
+                        path: "/projects/cube",
+                        element: <CubePage />
+                    }
+                ]
             },
             {
                 path: "/about",
@@ -36,7 +39,9 @@ const router = createBrowserRouter([
             }
         ]
     }
-]);
+];
+
+const router = createBrowserRouter(routes);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>

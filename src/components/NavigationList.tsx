@@ -1,11 +1,12 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, matchPath, matchRoutes, resolvePath, useLocation, useMatch, useResolvedPath } from "react-router-dom";
 import classNames from "classnames";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 
 export type NavigationEntry = {
-    href: string;
+    path: string;
     img: React.ReactElement;
     text: string;
+    children?: NavigationEntry[] | null | undefined;
 };
 
 type Props = {
@@ -14,15 +15,29 @@ type Props = {
 
 export default function NavigationList({ navigation }: Props) {
     const location = useLocation();
+    const currentLocationParts = location.pathname.split("/");
 
-    // somehow position this on the left as a list
+    const isPathActive = (path: string) => {
+        const pathParts = path.split("/");
+
+        if (pathParts.length > currentLocationParts.length) return false;
+
+        for (let i = 0; i < pathParts.length; i++) {
+            if (pathParts[i] !== currentLocationParts[i]) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
     return (
-        <div className="fixed">
+        <div className="fixed w-0">
             <nav className="relative -left-40 w-32">
                 {navigation.map((entryData, index) => (
                     <NavigationItem
                         entryData={entryData}
-                        selected={location.pathname === entryData.href}
+                        active={isPathActive(entryData.path)}
                         index={index}
                         key={index}
                     />
@@ -31,12 +46,6 @@ export default function NavigationList({ navigation }: Props) {
         </div>
     );
 }
-
-type NavigationItemProps = {
-    entryData: NavigationEntry;
-    selected: boolean;
-    index: number;
-};
 
 const colorPattern = [
     {
@@ -71,40 +80,44 @@ const colorPattern = [
     }
 ];
 
-function NavigationItem({ entryData, selected, index }: NavigationItemProps) {
+type NavigationItemProps = {
+    entryData: NavigationEntry;
+    active: boolean;
+    index: number;
+};
+
+function NavigationItem({ entryData, active, index }: NavigationItemProps) {
     /* do specific styling for selected element*/
     const colorGradient = colorPattern[index % colorPattern.length];
 
     return (
         <Link
-            to={entryData.href}
+            to={entryData.path}
             className="group"
         >
             <li
                 className={classNames(
                     "m-2 flex h-7 list-none items-center gap-2",
-                    selected ? "text-white" : "text-zinc-600"
+                    active ? "text-white" : "text-zinc-600"
                 )}
             >
                 <div
                     className={classNames(
-                        "button-highlight w-7 rounded-lg bg-gradient-to-r p-1",
+                        "box-highlight w-7 rounded-lg bg-gradient-to-r p-1",
                         colorGradient.from,
                         colorGradient.to,
-                        selected ? colorGradient.selected : "from-zinc-700 to-zinc-800 group-hover:text-zinc-300"
+                        active ? colorGradient.selected : "from-zinc-700 to-zinc-800 group-hover:text-zinc-300"
                     )}
                 >
-                    <span className={classNames("relative", { "nav-button": !selected })}>
+                    <span className={classNames("relative", { "nav-button": !active })}>
                         {entryData.img}
-                        <ArrowRightIcon
-                            className={classNames(selected ? "hidden" : "nav-arrow absolute top-0 left-0")}
-                        />
+                        <ArrowRightIcon className={classNames(active ? "hidden" : "nav-arrow absolute top-0 left-0")} />
                     </span>
                 </div>
                 <span
                     className={classNames(
                         "colorGradient.textColor text-sm font-bold",
-                        selected ? colorGradient.textColor : "group-hover:text-zinc-300"
+                        active ? colorGradient.textColor : "group-hover:text-zinc-300"
                     )}
                 >
                     {entryData.text}
