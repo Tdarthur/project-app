@@ -11,6 +11,8 @@ type Props = {
     language: string;
 };
 
+const CODE_BLOCK_BACKGROUND_COLOR = "rgb(31 41 55)";
+
 export default function Codeblock({ children, title, language }: Props) {
     const [copyHovered, setCopyHovered] = useState(false);
 
@@ -46,17 +48,15 @@ export default function Codeblock({ children, title, language }: Props) {
                 <OutlineCopyIcon className={classNames("w-full", { hidden: copyHovered })} />
             </span>
 
-            {!!title && (
-                <h2
-                    style={{ backgroundColor: "#2d2d2d" }}
-                    className="w-fit rounded-t-sm px-4 pt-2 font-bold text-gray-400"
-                >
-                    {title}
-                </h2>
-            )}
+            {!!title && <h2 className="w-fit rounded-t-sm bg-gray-800 px-4 pt-2 font-bold text-gray-400">{title}</h2>}
 
-            <pre style={{ marginTop: 0, marginBottom: 0 }}>
-                <code className={`language-${language}`}>{children}</code>
+            <pre style={{ marginTop: 0, marginBottom: 0, backgroundColor: CODE_BLOCK_BACKGROUND_COLOR }}>
+                <code
+                    className={`language-${language}`}
+                    style={{ backgroundColor: CODE_BLOCK_BACKGROUND_COLOR }}
+                >
+                    {children}
+                </code>
             </pre>
         </div>
     );

@@ -17,7 +17,7 @@ export default function Section({ children, title, className, buttonClass, panel
                 <div className={classNames("mb-2", className)}>
                     <Disclosure.Button
                         className={classNames(
-                            "flex h-8 w-full items-center rounded-t-sm bg-zinc-800 py-1 px-2 font-bold",
+                            "flex h-8 w-full items-center rounded-t-sm bg-gray-800 py-1 px-2 font-bold",
                             { "rounded-b-sm": !open },
                             buttonClass
                         )}
@@ -28,7 +28,7 @@ export default function Section({ children, title, className, buttonClass, panel
                             <ChevronDownIcon className={open ? "rotate-180 transform" : ""} />
                         </div>
                     </Disclosure.Button>
-                    <Disclosure.Panel className={classNames("rounded-b-sm bg-zinc-700 p-2", panelClass)}>
+                    <Disclosure.Panel className={classNames("rounded-b-sm bg-gray-700 p-2", panelClass)}>
                         {children}
                     </Disclosure.Panel>
                 </div>

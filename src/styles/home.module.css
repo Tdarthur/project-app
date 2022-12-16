@@ -1,0 +1,14 @@
+.nameText {
+    background-size: 200% 100%;
+    animation: slideBackground 2s linear infinite;
+}
+
+@keyframes slideBackground {
+    from {
+        background-position: 0;
+    }
+
+    to {
+        background-position: 200% 0;
+    }
+}

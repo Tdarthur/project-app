@@ -36,7 +36,7 @@ function ContactForm() {
                 placeholder="Subject"
                 className="mt-2 rounded-b-none"
             />
-            <hr className="w-full border-none bg-gray-700" />
+            <hr className="h-px w-full border-none bg-gray-700" />
             <ContactTextAreaInput
                 name="message"
                 placeholder="Message"

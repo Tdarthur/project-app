@@ -46,19 +46,9 @@ function Layout({ error = false }: Props) {
             ]
         },
         {
-            path: "/about",
-            img: <QuestionMarkCircleIcon />,
-            text: "About"
-        },
-        {
             path: "/contact",
             img: <IdentificationIcon />,
             text: "Contact Me"
-        },
-        {
-            path: "/test",
-            img: <ComputerDesktopIcon />,
-            text: "Test"
         }
     ];
 

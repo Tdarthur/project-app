@@ -69,15 +69,20 @@ function ProjectCard({ to, name, explanation, imageClass, hoverImageClass }: Pro
             <div className="absolute top-0 h-3/4 w-full rounded-t-lg bg-gradient-to-t from-black to-transparent transition-all duration-500 group-hover:h-full group-hover:rounded-b-lg"></div>
             <article
                 className={classNames(
-                    "box-highlight flex h-96 w-96 flex-col rounded-lg bg-zinc-500 bg-cover bg-center transition-all duration-500",
+                    "box-highlight flex h-96 w-96 flex-col rounded-lg bg-gray-500 bg-cover bg-center transition-all duration-500",
                     imageClass,
                     hoverImageClass
                 )}
                 style={{ transitionProperty: "background" }}
             >
-                <h2 className="relative py-2 text-center text-4xl font-bold shadow-white drop-shadow-lg">{name}</h2>
+                <h2
+                    className="text-shadow-lg relative py-4 text-center text-3xl font-bold text-gray-300"
+                    style={{ textShadow: "0 0 1rem black" }}
+                >
+                    {name}
+                </h2>
                 <div className="relative flex h-1/2 flex-grow flex-col-reverse rounded-b-lg bg-gradient-to-t from-black to-transparent p-4">
-                    <span className="text-right">{explanation}</span>
+                    <span className="text-right text-gray-300">{explanation}</span>
                 </div>
             </article>
         </Link>

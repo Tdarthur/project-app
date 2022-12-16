@@ -1,0 +1,51 @@
+@keyframes hideNavIcon {
+    from {
+        scale: 1;
+        transform: rotate(0);
+    }
+
+    25% {
+        scale: 1;
+    }
+
+    to {
+        scale: 0;
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes showNavIcon {
+    from {
+        scale: 0;
+        transform: rotate(180deg);
+    }
+
+    75% {
+        scale: 1;
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.navButton {
+    --show-button-animation: showNavIcon forwards 200ms;
+    --hide-button-animation: hideNavIcon forwards 200ms;
+}
+
+nav .navButton > *:not(.navArrow) {
+    animation: var(--show-button-animation);
+}
+
+nav a:hover .navButton > *:not(.navArrow) {
+    animation: var(--hide-button-animation);
+}
+
+.navButton > .navArrow {
+    animation: var(--hide-button-animation);
+}
+
+nav a:hover .navButton > .navArrow {
+    animation: var(--show-button-animation);
+}

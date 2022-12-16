@@ -1,6 +1,8 @@
-import { Link, matchPath, matchRoutes, resolvePath, useLocation, useMatch, useResolvedPath } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import classNames from "classnames";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
+
+import styles from "../styles/navigation.module.css";
 
 export type NavigationEntry = {
     path: string;
@@ -38,7 +40,6 @@ export default function NavigationList({ navigation }: Props) {
                     <NavigationItem
                         entryData={entryData}
                         active={isPathActive(entryData.path)}
-                        index={index}
                         key={index}
                     />
                 ))}
@@ -47,49 +48,12 @@ export default function NavigationList({ navigation }: Props) {
     );
 }
 
-const colorPattern = [
-    {
-        from: "group-hover:from-violet-500",
-        to: "group-hover:to-violet-700",
-        selected: "from-violet-500 to-violet-700",
-        textColor: "text-violet-600"
-    },
-    {
-        from: "group-hover:from-cyan-600",
-        to: "group-hover:to-cyan-700",
-        selected: "from-cyan-500 to-cyan-700",
-        textColor: "text-cyan-600"
-    },
-    {
-        from: "group-hover:from-green-600",
-        to: "group-hover:to-green-700",
-        selected: "from-green-500 to-green-700",
-        textColor: "text-green-600"
-    },
-    {
-        from: "group-hover:from-yellow-600",
-        to: "group-hover:to-yellow-700",
-        selected: "from-yellow-500 to-yellow-700",
-        textColor: "text-yellow-600"
-    },
-    {
-        from: "group-hover:from-red-600",
-        to: "group-hover:to-red-700",
-        selected: "from-red-500 to-red-700",
-        textColor: "text-red-600"
-    }
-];
-
 type NavigationItemProps = {
     entryData: NavigationEntry;
     active: boolean;
-    index: number;
 };
 
-function NavigationItem({ entryData, active, index }: NavigationItemProps) {
-    /* do specific styling for selected element*/
-    const colorGradient = colorPattern[index % colorPattern.length];
-
+function NavigationItem({ entryData, active }: NavigationItemProps) {
     return (
         <Link
             to={entryData.path}
@@ -98,26 +62,29 @@ function NavigationItem({ entryData, active, index }: NavigationItemProps) {
             <li
                 className={classNames(
                     "m-2 flex h-7 list-none items-center gap-2",
-                    active ? "text-white" : "text-zinc-600"
+                    active ? "text-white" : "text-gray-600"
                 )}
             >
+                {/* nav icon */}
                 <div
                     className={classNames(
-                        "box-highlight w-7 rounded-lg bg-gradient-to-r p-1",
-                        colorGradient.from,
-                        colorGradient.to,
-                        active ? colorGradient.selected : "from-zinc-700 to-zinc-800 group-hover:text-zinc-300"
+                        "box-highlight w-7 rounded-lg bg-gradient-to-r p-1 group-hover:from-yellow-600 group-hover:to-yellow-700",
+                        active ? "from-yellow-500 to-yellow-700" : "from-gray-700 to-gray-800 group-hover:text-gray-300"
                     )}
                 >
-                    <span className={classNames("relative", { "nav-button": !active })}>
+                    <span className={classNames("relative", !active ? styles.navButton : "")}>
                         {entryData.img}
-                        <ArrowRightIcon className={classNames(active ? "hidden" : "nav-arrow absolute top-0 left-0")} />
+                        <ArrowRightIcon
+                            className={classNames(styles.navArrow, active ? "hidden" : "absolute top-0 left-0")}
+                        />
                     </span>
                 </div>
+
+                {/* nav text */}
                 <span
                     className={classNames(
                         "colorGradient.textColor text-sm font-bold",
-                        active ? colorGradient.textColor : "group-hover:text-zinc-300"
+                        active ? "text-yellow-600" : "group-hover:text-gray-300"
                     )}
                 >
                     {entryData.text}
