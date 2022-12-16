@@ -22,22 +22,25 @@ function ContactForm() {
             <ContactTextInput
                 name="name"
                 placeholder="Name"
+                className="mt-2"
             />
 
             <ContactTextInput
                 name="email"
                 placeholder="Email"
+                className="mt-2"
             />
 
             <ContactTextInput
                 name="subject"
                 placeholder="Subject"
-                className="rounded-b-none"
+                className="mt-2 rounded-b-none"
             />
+            <hr className="w-full border-none bg-gray-700" />
             <ContactTextAreaInput
                 name="message"
                 placeholder="Message"
-                className="mt-0 rounded-t-none border-t border-t-gray-700 outline-offset-8"
+                className="rounded-t-none"
             />
 
             <button
@@ -63,7 +66,7 @@ function ContactTextInput({ name, placeholder, className }: ContactTextInputProp
             type="text"
             name={name}
             className={classNames(
-                "mt-2 w-full rounded-sm bg-gray-800 p-2 text-gray-100 placeholder-gray-600 autofill:bg-black focus-visible:outline-0",
+                "h-10 w-full rounded-sm bg-gray-800 p-2 text-gray-100 placeholder-gray-600 autofill:bg-black focus-visible:outline-0",
                 className
             )}
             maxLength={30}
@@ -86,7 +89,7 @@ function ContactTextAreaInput({ name, placeholder, className }: ContactTextInput
             <textarea
                 name={name}
                 className={classNames(
-                    "mt-2 h-52 max-h-96 w-full rounded-sm bg-gray-800 p-2 text-gray-100 placeholder-gray-600 autofill:bg-black focus-visible:outline-0",
+                    "h-52 max-h-96 min-h-[2.5rem] w-full overflow-hidden rounded-sm bg-gray-800 p-2 text-gray-100 placeholder-gray-600 autofill:bg-black focus-visible:outline-0",
                     className
                 )}
                 maxLength={500}
