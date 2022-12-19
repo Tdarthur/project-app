@@ -3,10 +3,9 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Layout from "./Layout";
-import AboutPage from "./routes/AboutPage";
 import ContactPage from "./routes/ContactPage";
 import HomePage from "./routes/HomePage";
-import CubePage from "./routes/projects/CubePage";
+import CubePage from "./routes/projects/cube/CubePage";
 import ProjectsPage from "./routes/ProjectsPage";
 
 const routes = [

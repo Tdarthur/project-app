@@ -6,14 +6,15 @@ import classNames from "classnames";
 import Prism from "prismjs";
 
 type Props = {
-    children: string;
     title: string;
     language: string;
+    children: string;
+    className?: string | undefined;
 };
 
 const CODE_BLOCK_BACKGROUND_COLOR = "rgb(31 41 55)";
 
-export default function Codeblock({ children, title, language }: Props) {
+export default function Codeblock({ title, language, children, className }: Props) {
     const [copyHovered, setCopyHovered] = useState(false);
 
     useEffect(() => {
@@ -36,7 +37,7 @@ export default function Codeblock({ children, title, language }: Props) {
     };
 
     return (
-        <div className="relative">
+        <div className={classNames("relative", className)}>
             <span
                 className={classNames("absolute right-2 block h-6 w-6 cursor-pointer", !title ? "top-2" : "top-10")}
                 onClick={copyCode}

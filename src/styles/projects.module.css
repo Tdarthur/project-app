@@ -1,0 +1,4 @@
+.cardPointerEffect {
+    background: radial-gradient(white, transparent 70%, transparent);
+    mix-blend-mode: lighten;
+}

@@ -1,13 +1,6 @@
-import { matchPath, Outlet, useLocation, useRouteError } from "react-router-dom";
+import { matchPath, Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import {
-    ComputerDesktopIcon,
-    CubeIcon,
-    HomeIcon,
-    IdentificationIcon,
-    MagnifyingGlassIcon
-} from "@heroicons/react/24/solid";
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { CubeIcon, HomeIcon, IdentificationIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 import Header from "./components/Header";
 import NavigationList, { NavigationEntry } from "./components/NavigationList";
@@ -18,14 +11,8 @@ type Props = {
     error?: boolean;
 };
 
-type DisplayableError = {
-    status: string;
-    statusText: string;
-};
-
 function Layout({ error = false }: Props) {
     const location = useLocation();
-    const errorData = useRouteError();
 
     const navigation: NavigationEntry[] = [
         {
@@ -70,19 +57,6 @@ function Layout({ error = false }: Props) {
     };
 
     let pageName = findPageEntry(navigation)?.text;
-
-    if (error) {
-        const displayableError = errorData as DisplayableError;
-
-        if (displayableError.status && displayableError.statusText) {
-            pageName = `${displayableError.status} (${displayableError.statusText})`;
-        }
-    }
-
-    if (!pageName) {
-        console.error(error);
-        pageName = "An Unexpected Error Occurred";
-    }
 
     return (
         <>

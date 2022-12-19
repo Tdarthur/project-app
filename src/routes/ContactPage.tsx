@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames";
+import TextInput from "../components/TextInput";
+import TextAreaInput from "../components/TextAreaInput";
 
 type Props = {};
 
@@ -19,28 +21,35 @@ function ContactForm() {
 
     return (
         <form className="flex w-[24rem] flex-col items-center">
-            <ContactTextInput
+            <TextInput
                 name="name"
                 placeholder="Name"
                 className="mt-2"
+                maxLength={30}
             />
 
-            <ContactTextInput
+            <TextInput
                 name="email"
                 placeholder="Email"
                 className="mt-2"
+                maxLength={30}
             />
 
-            <ContactTextInput
+            <TextInput
                 name="subject"
                 placeholder="Subject"
                 className="mt-2 rounded-b-none"
+                maxLength={30}
+                autoComplete="off"
             />
             <hr className="h-px w-full border-none bg-gray-700" />
-            <ContactTextAreaInput
+            <TextAreaInput
                 name="message"
                 placeholder="Message"
                 className="rounded-t-none"
+                maxLength={500}
+                autoComplete="off"
+                showRemainingCharacters
             />
 
             <button
@@ -51,60 +60,5 @@ function ContactForm() {
                 Submit
             </button>
         </form>
-    );
-}
-
-type ContactTextInputProps = {
-    name: string;
-    placeholder: string;
-    className?: string;
-};
-
-function ContactTextInput({ name, placeholder, className }: ContactTextInputProps) {
-    return (
-        <input
-            type="text"
-            name={name}
-            className={classNames(
-                "h-10 w-full rounded-sm bg-gray-800 p-2 text-gray-100 placeholder-gray-600 autofill:bg-black focus-visible:outline-0",
-                className
-            )}
-            maxLength={30}
-            placeholder={placeholder}
-        />
-    );
-}
-
-function ContactTextAreaInput({ name, placeholder, className }: ContactTextInputProps) {
-    const [value, setValue] = useState("");
-
-    const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        event.preventDefault();
-
-        setValue(event.target.value);
-    };
-
-    return (
-        <div className="relative w-full">
-            <textarea
-                name={name}
-                className={classNames(
-                    "h-52 max-h-96 min-h-[2.5rem] w-full overflow-hidden rounded-sm bg-gray-800 p-2 text-gray-100 placeholder-gray-600 autofill:bg-black focus-visible:outline-0",
-                    className
-                )}
-                maxLength={500}
-                placeholder={placeholder}
-                value={value}
-                onChange={onChange}
-            />
-            <span
-                className={classNames(
-                    "absolute -bottom-4 left-0 w-full text-xs",
-                    value.length < 500 ? "text-gray-500" : "text-yellow-600"
-                )}
-            >
-                {500 - value.length} characters remaining
-            </span>
-        </div>
     );
 }

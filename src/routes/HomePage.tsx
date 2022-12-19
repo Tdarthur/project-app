@@ -6,10 +6,10 @@ export default function HomePage() {
     return (
         <div className="flex flex-col items-center">
             <h2 className="mb-2 text-2xl">
-                Hi, I'm{" "}
+                Hello, I'm{" "}
                 <span
                     className={classNames(
-                        "bg-gradient-to-r from-yellow-500 via-yellow-700 to-yellow-500 bg-clip-text bg-repeat-x font-bold text-transparent",
+                        "bg-gradient-to-r from-yellow-500 via-yellow-700 to-yellow-500 bg-clip-text font-bold text-transparent",
                         styles.nameText
                     )}
                 >
@@ -17,7 +17,18 @@ export default function HomePage() {
                 </span>
                 <span className="text-base">.</span>
             </h2>
-            <h3 className="text-xl text-white">I'm a full-stack web developer.</h3>
+            <h3 className="text-xl">
+                I'm a{" "}
+                <span
+                    className={classNames(
+                        "bg-gradient-to-r from-yellow-500 via-yellow-700 to-yellow-500 bg-clip-text font-bold text-transparent",
+                        styles.nameText
+                    )}
+                >
+                    full-stack web developer
+                </span>
+                .
+            </h3>
         </div>
     );
 }
