@@ -3,12 +3,6 @@ import { Link, useRouteError } from "react-router-dom";
 export default function ErrorPage() {
     const error: any = useRouteError();
 
-    console.log(typeof error);
-    for (let key in error) {
-        console.log(" - ", key, error[key]);
-    }
-    console.log("");
-
     return (
         <>
             <div className="mx-auto h-72 w-1/2 border-x border-gray-800 px-4 text-left">
