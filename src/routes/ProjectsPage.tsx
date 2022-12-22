@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import classNames from "classnames";
 
@@ -9,7 +9,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 type Filter = { key: string; display: string };
 
 const filters: Filter[] = [
-    { key: "css", display: "CSS Only" },
+    { key: "css", display: "CSS" },
     { key: "javascript", display: "JavaScript" },
     { key: "three", display: "Three.js" }
 ];
@@ -69,14 +69,43 @@ const projectDataList: ProjectData[] = [
 const fallbackBackgroundClass = "bg-[url('../src/assets/placeholder.png')]";
 const fallbackBackgroundHoverClass = "hover:bg-[url('../src/assets/placeholder.png')]";
 
+const CARD_ANIMATION_DELAY = 150;
+
 export default function ProjectsPage() {
     const location = useLocation();
+
     const searchInputRef = useRef<HTMLInputElement>(null);
+
     const [searchValue, setSearchValue] = useState<string>("");
     const [currentFilter, setCurrentFilter] = useState<string | null>(null);
+    const [results, setResults] = useState(projectDataList.map((project) => project.name));
 
-    const isChild = location.pathname !== "/projects" && location.pathname !== "/projects/";
+    // watch the search/filters and update the results when they change
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            const newResults = projectDataList
+                .filter((projectData) => {
+                    const lowerCaseName = projectData.name.toLowerCase();
 
+                    const matchesSearchValue =
+                        lowerCaseName.includes(searchValue.toLowerCase()) ||
+                        projectData.tags.some((tag) => tag.toLowerCase().includes(searchValue.toLowerCase()));
+
+                    const matchesFilter = currentFilter === null || projectData.tags.includes(currentFilter);
+
+                    return matchesSearchValue && matchesFilter;
+                })
+                .map((projectData) => projectData.name);
+
+            setResults(newResults);
+        }, CARD_ANIMATION_DELAY);
+
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, [searchValue, currentFilter]);
+
+    // handle events on the page
     const onClickSearchIcon = () => {
         searchInputRef.current?.select();
     };
@@ -91,11 +120,16 @@ export default function ProjectsPage() {
         setCurrentFilter(currentFilter === filterKey ? null : filterKey);
     };
 
+    // check if this is a specific project page, or if we're at the base project page
+    const isChild = location.pathname !== "/projects" && location.pathname !== "/projects/";
+
+    let movingCards = false;
+
     return isChild ? (
         <Outlet />
     ) : (
         <div className="flex flex-col items-center">
-            <strong className="mb-8 font-bold italic text-yellow-600">Check out some of my projects below!</strong>
+            <strong className="mb-8 font-bold text-yellow-600">Check out some of my projects below!</strong>
 
             {/* search/filter section */}
             <section className="mb-10 w-96">
@@ -141,19 +175,35 @@ export default function ProjectsPage() {
             <section className="flex w-[69rem] flex-wrap gap-12">
                 {projectDataList.map((projectData, index) => {
                     const searchFiltered = !(
-                        projectData.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
-                        projectData.tags.some((element) => element.toLowerCase().startsWith(searchValue.toLowerCase()))
+                        projectData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+                        projectData.tags.some((element) => element.toLowerCase().includes(searchValue.toLowerCase()))
                     );
                     const tagFiltered = !!currentFilter && !projectData.tags.includes(currentFilter);
+
+                    const notRendered = !results.includes(projectData.name);
+
+                    if (
+                        (notRendered && !searchFiltered && !tagFiltered) ||
+                        (!notRendered && (searchFiltered || tagFiltered))
+                    ) {
+                        movingCards = true;
+                    }
 
                     return (
                         <ProjectCard
                             to={`/projects/${projectData.relativePath}`}
                             name={projectData.name}
                             explanation={projectData.explanation}
+                            className={classNames(
+                                styles.card,
+                                "transition-all duration-150",
+                                movingCards ? "scale-0" : "",
+                                {
+                                    hidden: notRendered
+                                }
+                            )}
                             imageClass={projectData.imageClass}
                             hoverImageClass={projectData.hoverImageClass}
-                            hidden={searchFiltered || tagFiltered}
                             key={index}
                         />
                     );
@@ -167,12 +217,12 @@ type ProjectCardProps = {
     to: string;
     name: string;
     explanation: string;
+    className: string | undefined;
     imageClass: string;
     hoverImageClass: string;
-    hidden: boolean;
 };
 
-function ProjectCard({ to, name, explanation, imageClass, hoverImageClass, hidden }: ProjectCardProps) {
+function ProjectCard({ to, name, explanation, className, imageClass, hoverImageClass }: ProjectCardProps) {
     const [left, setLeft] = useState(0);
     const [top, setTop] = useState(0);
     const cardRef = useRef<HTMLAnchorElement>(null);
@@ -191,17 +241,14 @@ function ProjectCard({ to, name, explanation, imageClass, hoverImageClass, hidde
     return (
         <Link
             to={to}
-            className={classNames(
-                "group relative overflow-hidden rounded-lg transition-all duration-100",
-                hidden ? "scale-0 opacity-0" : ""
-            )}
+            className={classNames("group relative overflow-hidden rounded-lg", className)}
             onMouseMove={onMouseMove}
             ref={cardRef}
         >
             {/* hover effect */}
             <div
                 className={classNames(
-                    "absolute z-10 aspect-square w-[150%] opacity-0 transition-opacity duration-500 group-hover:opacity-10",
+                    "absolute z-10 aspect-square w-[125%] opacity-0 transition-opacity duration-300 group-hover:opacity-10",
                     styles.cardPointerEffect
                 )}
                 style={{ left, top }}
@@ -209,13 +256,13 @@ function ProjectCard({ to, name, explanation, imageClass, hoverImageClass, hidde
             />
 
             {/* faded background overlay */}
-            <div className="absolute bottom-0 h-1/4 w-full rounded-b-lg bg-black transition-all duration-500 group-hover:h-0"></div>
-            <div className="absolute top-0 h-3/4 w-full rounded-t-lg bg-gradient-to-t from-black to-transparent transition-all duration-500 group-hover:h-full group-hover:rounded-b-lg"></div>
+            <div className="absolute bottom-0 h-1/4 w-full rounded-b-lg bg-black transition-all duration-300 group-hover:h-0"></div>
+            <div className="absolute top-0 h-3/4 w-full rounded-t-lg bg-gradient-to-t from-black to-transparent transition-all duration-300 group-hover:h-full group-hover:rounded-b-lg"></div>
 
             {/* card contents */}
             <article
                 className={classNames(
-                    "box-highlight flex h-60 w-60 flex-col rounded-lg bg-gray-500 bg-cover bg-center grayscale transition-all duration-500",
+                    "box-highlight flex h-60 w-60 flex-col rounded-lg bg-gray-300 bg-cover bg-center grayscale-[80%] transition-all duration-300 group-hover:grayscale-0",
                     !!imageClass ? imageClass : fallbackBackgroundClass,
                     !!hoverImageClass ? hoverImageClass : fallbackBackgroundHoverClass
                 )}
