@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useOutletContext } from "react-router-dom";
 import classNames from "classnames";
 
 import styles from "../styles/projects.module.css";
@@ -33,20 +33,20 @@ const projectDataList: ProjectData[] = [
         tags: ["css"]
     },
     {
-        relativePath: "",
-        name: "Second",
-        explanation: "This is another project",
+        relativePath: "gooey",
+        name: "Gooey",
+        explanation: "This is something...",
         imageClass: "",
         hoverImageClass: "",
-        tags: ["javascript", "three"]
+        tags: ["css"]
     },
     {
-        relativePath: "",
-        name: "Third",
+        relativePath: "thing",
+        name: "Thing",
         explanation: "Third project 'er",
         imageClass: "",
         hoverImageClass: "",
-        tags: ["three"]
+        tags: ["javascript"]
     },
     {
         relativePath: "",
@@ -62,7 +62,7 @@ const projectDataList: ProjectData[] = [
         explanation: "This is the fifth and final project my guy",
         imageClass: "",
         hoverImageClass: "",
-        tags: ["css", "javascript", "three"]
+        tags: ["", "javascript", "three"]
     }
 ];
 
@@ -79,6 +79,9 @@ export default function ProjectsPage() {
     const [searchValue, setSearchValue] = useState<string>("");
     const [currentFilter, setCurrentFilter] = useState<string | null>(null);
     const [results, setResults] = useState(projectDataList.map((project) => project.name));
+
+    const [initialized, setInitialized] = useState(false);
+    const [projectsPerRow, setProjectsPerRow] = useState(100);
 
     // watch the search/filters and update the results when they change
     useEffect(() => {
@@ -105,6 +108,30 @@ export default function ProjectsPage() {
         };
     }, [searchValue, currentFilter]);
 
+    const calculateProjectsPerRow = () => {
+        const mainContent = document.querySelector("#main_content");
+        let contentWidth = mainContent ? mainContent.clientWidth - 96 : 0;
+        let newProjectsPerRow = Math.floor(contentWidth / 280);
+        let totalWidth = newProjectsPerRow * 240 + (newProjectsPerRow - 1) * 40;
+        if (totalWidth <= contentWidth - 280) {
+            newProjectsPerRow++;
+        }
+
+        setProjectsPerRow(Math.max(1, newProjectsPerRow));
+    };
+
+    useEffect(() => {
+        if (!initialized) {
+            setInitialized(true);
+
+            window.addEventListener("resize", () => {
+                calculateProjectsPerRow();
+            });
+
+            calculateProjectsPerRow();
+        }
+    }, [initialized]);
+
     // handle events on the page
     const onClickSearchIcon = () => {
         searchInputRef.current?.select();
@@ -124,91 +151,111 @@ export default function ProjectsPage() {
     const isChild = location.pathname !== "/projects" && location.pathname !== "/projects/";
 
     let movingCards = false;
+    let renderedCards = 0;
 
     return isChild ? (
         <Outlet />
     ) : (
-        <div className="flex flex-col items-center">
+        <div className="gray flex w-full flex-col items-center">
             <strong className="mb-8 font-bold text-yellow-600">Check out some of my projects below!</strong>
 
-            {/* search/filter section */}
-            <section className="mb-10 w-96">
-                {/* search input */}
-                <div className="mb-2 flex h-10 items-center rounded-sm bg-gray-800">
-                    <MagnifyingGlassIcon
-                        className="w-10 flex-none cursor-pointer p-2 text-gray-700 hover:text-gray-500"
-                        onClick={onClickSearchIcon}
-                    />
-                    <hr className="h-3/5 w-px border-none bg-gray-700" />
-                    <TextInput
-                        name="search"
-                        placeholder="Search"
-                        className="rounded-l-none bg-transparent"
-                        ref={searchInputRef}
-                        autoComplete="off"
-                        onChange={onChangeSearch}
-                    />
-                </div>
-
-                {/* filter dropdown */}
-                <div className="relative mx-auto flex justify-center gap-2">
-                    {filters.map((filter, index) => {
-                        return (
-                            <span
-                                key={index}
-                                onClick={() => {
-                                    onClickFilter(filter.key);
-                                }}
-                                className={classNames(
-                                    "transparent cursor-pointer select-none rounded-full bg-gray-800 py-1 px-3 text-sm hover:bg-yellow-600",
-                                    { "bg-yellow-700 hover:bg-yellow-700": filter.key === currentFilter }
-                                )}
-                            >
-                                {filter.display}
-                            </span>
-                        );
-                    })}
-                </div>
-            </section>
-
-            {/* projects section */}
-            <section className="flex w-[69rem] flex-wrap gap-12">
-                {projectDataList.map((projectData, index) => {
-                    const searchFiltered = !(
-                        projectData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-                        projectData.tags.some((element) => element.toLowerCase().includes(searchValue.toLowerCase()))
-                    );
-                    const tagFiltered = !!currentFilter && !projectData.tags.includes(currentFilter);
-
-                    const notRendered = !results.includes(projectData.name);
-
-                    if (
-                        (notRendered && !searchFiltered && !tagFiltered) ||
-                        (!notRendered && (searchFiltered || tagFiltered))
-                    ) {
-                        movingCards = true;
-                    }
-
-                    return (
-                        <ProjectCard
-                            to={`/projects/${projectData.relativePath}`}
-                            name={projectData.name}
-                            explanation={projectData.explanation}
-                            className={classNames(
-                                styles.card,
-                                "transition-all duration-150",
-                                movingCards ? "scale-0" : "",
-                                {
-                                    hidden: notRendered
-                                }
-                            )}
-                            imageClass={projectData.imageClass}
-                            hoverImageClass={projectData.hoverImageClass}
-                            key={index}
+            <div className="flex w-full flex-col items-center">
+                {/* search/filter section */}
+                <section className="mb-10 w-96">
+                    {/* search input */}
+                    <div className="mb-2 flex h-10 items-center rounded-sm bg-gray-800">
+                        <MagnifyingGlassIcon
+                            className="w-10 flex-none cursor-pointer p-2 text-gray-700 hover:text-gray-500"
+                            onClick={onClickSearchIcon}
                         />
-                    );
-                })}
-            </section>
+                        <hr className="h-3/5 w-px border-none bg-gray-700" />
+                        <TextInput
+                            name="search"
+                            placeholder="Search"
+                            className="rounded-l-none bg-transparent"
+                            ref={searchInputRef}
+                            autoComplete="off"
+                            onChange={onChangeSearch}
+                        />
+                    </div>
+
+                    {/* filter dropdown */}
+                    <div className="relative mx-auto flex justify-center gap-2">
+                        {filters.map((filter, index) => {
+                            return (
+                                <span
+                                    key={index}
+                                    onClick={() => {
+                                        onClickFilter(filter.key);
+                                    }}
+                                    className={classNames(
+                                        "transparent cursor-pointer select-none rounded-full bg-gray-800 py-1 px-3 text-sm hover:bg-yellow-600",
+                                        { "bg-yellow-700 hover:bg-yellow-700": filter.key === currentFilter }
+                                    )}
+                                >
+                                    {filter.display}
+                                </span>
+                            );
+                        })}
+                    </div>
+                </section>
+
+                {/* projects section */}
+                <section className="flex w-full justify-center">
+                    <div
+                        className="flex flex-wrap gap-10"
+                        style={{ width: `${projectsPerRow * 240 + (projectsPerRow - 1) * 40}px` }}
+                    >
+                        {projectDataList.map((projectData, index) => {
+                            const searchFiltered = !(
+                                projectData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+                                projectData.tags.some((element) =>
+                                    element.toLowerCase().includes(searchValue.toLowerCase())
+                                )
+                            );
+                            const tagFiltered = !!currentFilter && !projectData.tags.includes(currentFilter);
+
+                            const notRendered = !results.includes(projectData.name);
+
+                            if (
+                                (notRendered && !searchFiltered && !tagFiltered) ||
+                                (!notRendered && (searchFiltered || tagFiltered))
+                            ) {
+                                movingCards = true;
+                            }
+
+                            if (!notRendered) {
+                                renderedCards++;
+                            }
+
+                            return (
+                                <ProjectCard
+                                    to={`/projects/${projectData.relativePath}`}
+                                    name={projectData.name}
+                                    explanation={projectData.explanation}
+                                    className={classNames(
+                                        styles.card,
+                                        "transition-all duration-150",
+                                        movingCards ? "scale-0" : "",
+                                        {
+                                            hidden: notRendered
+                                        }
+                                    )}
+                                    imageClass={projectData.imageClass}
+                                    hoverImageClass={projectData.hoverImageClass}
+                                    key={index}
+                                />
+                            );
+                        })}
+                    </div>
+
+                    {renderedCards === 0 && (
+                        <span className="mt-24 w-full text-center italic text-gray-400">
+                            No projects matched your search...
+                        </span>
+                    )}
+                </section>
+            </div>
         </div>
     );
 }

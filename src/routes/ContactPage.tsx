@@ -1,11 +1,8 @@
-import React, { useState } from "react";
-import classNames from "classnames";
+import React from "react";
 import TextInput from "../components/TextInput";
 import TextAreaInput from "../components/TextAreaInput";
 
-type Props = {};
-
-export default function ContactPage({}: Props) {
+export default function ContactPage() {
     return (
         <div className="flex h-full w-full flex-col items-center justify-center">
             <strong className="mb-6 italic text-yellow-600">Have a question or want to work together?</strong>
@@ -20,7 +17,7 @@ function ContactForm() {
     };
 
     return (
-        <form className="flex w-[24rem] flex-col items-center">
+        <form className={"flex w-[24rem] flex-col items-center"}>
             <TextInput
                 name="name"
                 placeholder="Name"

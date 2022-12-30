@@ -4,11 +4,16 @@ import { ArrowRightIcon } from "@heroicons/react/24/solid";
 
 import styles from "../styles/navigation.module.css";
 
+export type NavigationEntryChild = {
+    path: string;
+    text: string;
+};
+
 export type NavigationEntry = {
     path: string;
     img: React.ReactElement;
     text: string;
-    children?: NavigationEntry[] | null | undefined;
+    children?: NavigationEntryChild[] | null | undefined;
 };
 
 type Props = {

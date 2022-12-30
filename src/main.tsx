@@ -3,10 +3,14 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Layout from "./Layout";
+// root pages
 import ContactPage from "./routes/ContactPage";
 import HomePage from "./routes/HomePage";
-import CubePage from "./routes/projects/cube/CubePage";
 import ProjectsPage from "./routes/ProjectsPage";
+// project pages
+import CubePage from "./routes/projects/cube/CubePage";
+import GooeyPage from "./routes/projects/gooey/GooeyPage";
+import ThingPage from "./routes/projects/thing/ThingPage";
 
 const routes = [
     {
@@ -25,6 +29,14 @@ const routes = [
                     {
                         path: "/projects/cube",
                         element: <CubePage />
+                    },
+                    {
+                        path: "/projects/gooey",
+                        element: <GooeyPage />
+                    },
+                    {
+                        path: "/projects/thing",
+                        element: <ThingPage />
                     }
                 ]
             },

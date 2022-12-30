@@ -1,0 +1,4 @@
+.blobs {
+    filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='goo'><feGaussianBlur in='SourceGraphic' stdDeviation='10' result='blur' /><feColorMatrix in='blur' mode='matrix' values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -7' result='goo' /><feBlend in='SourceGraphic' in2='goo'/></filter></svg>#goo");
+    -webkit-filter: url("#goo");
+}

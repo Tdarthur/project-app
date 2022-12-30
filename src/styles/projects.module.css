@@ -3,6 +3,8 @@
     mix-blend-mode: lighten;
 }
 
+/* card-appearing animation */
+
 .card {
     animation: cardAppear ease-in-out 150ms;
 }
@@ -14,5 +16,29 @@
 
     to {
         scale: 100%;
+    }
+}
+
+/* fade-in animations */
+
+.fadePrimary {
+    opacity: 0;
+
+    animation: fadeIn ease-out 500ms 100ms forwards;
+}
+
+.fadeSecondary {
+    opacity: 0;
+
+    animation: fadeIn ease-out 500ms 600ms forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 100%;
     }
 }
