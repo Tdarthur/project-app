@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, Outlet, useLocation, useOutletContext } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
 
-import styles from "../styles/projects.module.css";
 import TextInput from "../components/TextInput";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+
+import styles from "../styles/projects.module.css";
 
 type Filter = { key: string; display: string };
 
