@@ -23,7 +23,7 @@ function CubeInformation() {
 
             <Section title="Code">
                 <Codeblock
-                    title="Cube.jsx"
+                    title="Cube.tsx"
                     language="javascript"
                     className="mb-2"
                 >
