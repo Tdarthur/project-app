@@ -1,6 +1,6 @@
 import { matchPath, Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { HomeIcon, IdentificationIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { EnvelopeIcon, HomeIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 import Header from "./components/Header";
 import NavigationList, { NavigationEntry, NavigationEntryChild } from "./components/NavigationList";
@@ -44,7 +44,7 @@ function Layout({ error = false }: Props) {
         },
         {
             path: "/contact",
-            img: <IdentificationIcon />,
+            img: <EnvelopeIcon />,
             text: "Contact Me"
         }
     ];
