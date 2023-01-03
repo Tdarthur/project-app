@@ -3,7 +3,7 @@ import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
 
 type Props = {
-    children: React.ReactElement | React.ReactElement[] | string;
+    children: React.ReactNode;
     title: string;
     className?: string | null | undefined;
     buttonClass?: string | null | undefined;

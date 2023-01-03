@@ -42,3 +42,12 @@
 
     animation: fadeIn ease-out 500ms 600ms forwards;
 }
+
+/* controls tables */
+.controls tr > td:nth-child(1) {
+    padding-right: 0.5rem;
+}
+
+.controls tr > td:nth-child(2) {
+    padding-left: 0.5rem;
+}

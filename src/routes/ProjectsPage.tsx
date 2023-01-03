@@ -28,7 +28,7 @@ const projectDataList: ProjectData[] = [
     {
         relativePath: "cube",
         name: "3D Cube",
-        explanation: "This is a 3D cube that rotates",
+        explanation: "A 3D cube that rotates",
         imageClass: "bg-[url('../src/assets/rotating-cube.png')]",
         hoverImageClass: "group-hover:bg-[url('../src/assets/rotating-cube.gif')]",
         tags: ["css"]
@@ -36,9 +36,9 @@ const projectDataList: ProjectData[] = [
     {
         relativePath: "gooey",
         name: "Gooey",
-        explanation: "This is something...",
-        imageClass: "",
-        hoverImageClass: "",
+        explanation: "A goo-like ball that oscillates on it's surface",
+        imageClass: "bg-[url('../src/assets/gooey.jpg')]",
+        hoverImageClass: "group-hover:bg-[url('../src/assets/gooey.gif')]",
         tags: ["css"]
     },
     {
@@ -317,12 +317,12 @@ function ProjectCard({ to, name, explanation, className, imageClass, hoverImageC
                 style={{ transitionProperty: "background" }}
             >
                 <h2
-                    className="text-shadow-lg relative py-4 text-center text-3xl font-bold text-gray-300"
+                    className="text-shadow-lg relative pb-4 pt-2 text-center text-3xl font-bold text-gray-300"
                     style={{ textShadow: "0 0 1rem black" }}
                 >
                     {name}
                 </h2>
-                <div className="relative flex h-1/2 flex-grow flex-col-reverse rounded-b-lg bg-gradient-to-t from-black to-transparent p-4">
+                <div className="relative flex h-1/2 flex-grow flex-col-reverse rounded-b-lg bg-gradient-to-t from-black to-transparent p-4 pb-3">
                     <span className="text-right text-gray-300">{explanation}</span>
                 </div>
             </article>

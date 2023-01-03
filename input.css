@@ -6,6 +6,21 @@
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
 }
 
+.keycap {
+    display: inline-block;
+
+    background-color: #ddd;
+    color: #222;
+    border: 0.125rem solid #bbb;
+    padding: 0.25rem 0.5rem;
+    margin: 0.25rem 0;
+
+    box-shadow: 0 0.125rem 0.25rem black;
+
+    font-family: monospace;
+    font-weight: bold;
+}
+
 /* scrollbar */
 
 ::-webkit-scrollbar {
